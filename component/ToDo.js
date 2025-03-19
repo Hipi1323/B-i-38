@@ -5,22 +5,22 @@ import { useEffect, useState } from "react"
 import '../App.css';
 export const Todo = () => {
     const [productList, setProductList] = useState();
-    // const[skip, setSkip] = useState(0);
-    // const Limit = 6;
-    // const handleChangePage = (event) =>{
-    //     const page = parseInt(event.target.value);
-    //     setSkip(Limit * page)
-    // }
+    const [skip, setSkip] = useState(0);
+    const Limit = 6;
+    const handleChangePage = (event) => {
+        const page = parseInt(event.target.value);
+        setSkip(Limit * page)
+    }
     useEffect(() => {
         setTimeout(() => {
-            fetch(`https://fakestoreapi.com/products?limit=6&skip=6`)
+            fetch(`https://fakestoreapi.com/products?limit=${Limit}&skip=${skip}`)
                 .then(response => response.json())
                 .then(data => {
                     setProductList(data);
                 })
         }
             , 500)
-    }, []);
+    }, [skip]);
 
     return (
         <>
@@ -39,21 +39,21 @@ export const Todo = () => {
                     ))
                 ) : (
                     <>
-                    {Array(6).fill("").map((items,index) =>(
-                         <div className="skeleton-elemen">
-                            <Skeleton className="font-image" />
-                            <Skeleton className='font-title' />
-                            <div className="child__elementOther">
-                                <Skeleton className="font-price" width="55.21px"/>
-                                <Skeleton className="button__Buy" width="56px"/>
+                        {Array(6).fill("").map((items, index) => (
+                            <div className="skeleton-elemen">
+                                <Skeleton className="font-image" />
+                                <Skeleton className='font-title' />
+                                <div className="child__elementOther">
+                                    <Skeleton className="font-price" width="55.21px" />
+                                    <Skeleton className="button__Buy" width="56px" />
+                                </div>
                             </div>
-                        </div>
-                    )    
-                    )}
+                        )
+                        )}
                     </>
                 )}
             </div>
-            <select >
+            <select onChange={(event) => handleChangePage(event)}>
                 <option value={1}>page 1</option>
                 <option value={2}>page 2</option>
                 <option value={3}>page 3</option>
